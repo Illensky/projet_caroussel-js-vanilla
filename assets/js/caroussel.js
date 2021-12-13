@@ -1,4 +1,15 @@
-const imgArray = ["img1", "img2", "img3", "img4", "img5"];
+const imgArray = [
+    "/assets/img/img1.jpg",
+    "/assets/img/img2.jpg",
+    "/assets/img/img3.jpg",
+    "/assets/img/img4.jpg",
+    "/assets/img/img5.jpg"
+];
+
+/**
+ * @param imgArray take a array of string with the full adress of the wanted images
+ * @constructor Carousel, used to build a caroussel from a image adress array
+ */
 
 const Caroussel = function (imgArray) {
     const imgDiv = document.createElement("div")
@@ -44,7 +55,7 @@ const Caroussel = function (imgArray) {
     let imgIndex = 0;
 
     this.draw = function (){
-        imgDiv.style.backgroundImage = "url(/assets/img/" + imgArray[imgIndex] + ".jpg)"
+        imgDiv.style.backgroundImage = "url(" + imgArray[imgIndex] + ")"
     }
 
     this.set = function () {
