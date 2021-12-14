@@ -12,101 +12,108 @@ const imgArray = [
  */
 
 const Carousel = function (imgArray, carouselWidth, carouselHeight) {
-    const imgDiv = document.createElement("div")
-    imgDiv.style.border = "2px solid black";
-    imgDiv.style.width = "1920px";
-    imgDiv.style.height = "1280px";
-    imgDiv.style.margin = "auto";
-    imgDiv.style.borderRadius = "5px";
-    imgDiv.style.overflow = "hidden";
-    imgDiv.style.display = "flex";
-    imgDiv.id = "imgDiv"
 
-    let imgId = 0
-    for (let img of imgArray) {
-        const newImg = document.createElement("img");
-        newImg.src = img;
-        newImg.id = "img" + imgId.toString()
-        newImg.style.transform = "translateX(0)"
-        newImg.style.transition = "1000ms"
-        newImg.style.width = "1920px"
-        newImg.style.height = "1280px"
-        imgDiv.appendChild(newImg)
-        imgId++
+    this.imgArray = imgArray
+
+    this.imgDiv = document.createElement("div")
+    this.imgDiv.style.border = "2px solid black";
+    this.imgDiv.style.width = "1920px";
+    this.imgDiv.style.height = "1280px";
+    this.imgDiv.style.margin = "auto";
+    this.imgDiv.style.borderRadius = "5px";
+    this.imgDiv.style.overflow = "hidden";
+    this.imgDiv.style.display = "flex";
+    this.imgDiv.id = "imgDiv"
+
+    this.imgId = 0
+    for (let img of this.imgArray) {
+        this.newImg = document.createElement("img");
+        this.newImg.src = img;
+        this.newImg.id = "img" + this.imgId.toString()
+        this.newImg.style.transform = "translateX(0)"
+        this.newImg.style.transition = "1000ms"
+        this.newImg.style.width = "1920px"
+        this.newImg.style.height = "1280px"
+        this.imgDiv.appendChild(this.newImg)
+        this.imgId++
     }
 
-    const btnContainer = document.createElement("div")
-    btnContainer.style.width = "1920px";
-    btnContainer.style.height = "1280px";
-    btnContainer.style.display = "flex";
-    btnContainer.style.position = "absolute"
-    btnContainer.style.justifyContent = "space-between";
-    btnContainer.style.alignItems = "center";
-    imgDiv.appendChild(btnContainer);
+    this.btnContainer = document.createElement("div")
+    this.btnContainer.style.width = "1920px";
+    this.btnContainer.style.height = "1280px";
+    this.btnContainer.style.display = "flex";
+    this.btnContainer.style.position = "absolute"
+    this.btnContainer.style.justifyContent = "space-between";
+    this.btnContainer.style.alignItems = "center";
+    this.imgDiv.appendChild(this.btnContainer);
 
-    const leftBtn = document.createElement("button")
-    leftBtn.innerHTML = "<"
-    leftBtn.id = "leftBtn"
-    leftBtn.style.background = "darkgray";
-    leftBtn.style.border = "none";
-    leftBtn.style.borderRadius = "100%";
-    leftBtn.style.fontSize = "2rem";
-    leftBtn.style.height = "3rem";
-    leftBtn.style.width = "3rem";
-    leftBtn.style.cursor = "pointer";
-    btnContainer.appendChild(leftBtn)
+    this.leftBtn = document.createElement("button")
+    this.leftBtn.innerHTML = "<"
+    this.leftBtn.id = "leftBtn"
+    this.leftBtn.style.background = "darkgray";
+    this.leftBtn.style.border = "none";
+    this.leftBtn.style.borderRadius = "100%";
+    this.leftBtn.style.fontSize = "2rem";
+    this.leftBtn.style.height = "3rem";
+    this.leftBtn.style.width = "3rem";
+    this.leftBtn.style.cursor = "pointer";
+    this.btnContainer.appendChild(this.leftBtn)
 
-    const rightBtn = document.createElement("button")
-    rightBtn.innerHTML = ">"
-    rightBtn.id = "rightBtn"
-    rightBtn.style.background = "darkgray";
-    rightBtn.style.border = "none";
-    rightBtn.style.borderRadius = "100%";
-    rightBtn.style.fontSize = "2rem";
-    rightBtn.style.height = "3rem";
-    rightBtn.style.width = "3rem";
-    rightBtn.style.cursor = "pointer";
-    btnContainer.appendChild(rightBtn)
+    this.rightBtn = document.createElement("button")
+    this.rightBtn.innerHTML = ">"
+    this.rightBtn.id = "rightBtn"
+    this.rightBtn.style.background = "darkgray";
+    this.rightBtn.style.border = "none";
+    this.rightBtn.style.borderRadius = "100%";
+    this.rightBtn.style.fontSize = "2rem";
+    this.rightBtn.style.height = "3rem";
+    this.rightBtn.style.width = "3rem";
+    this.rightBtn.style.cursor = "pointer";
+    this.btnContainer.appendChild(this.rightBtn)
 
 
-    let translate = 0
-    this.translateRight = function () {
-        translate += 1920
-        if (translate === 1920 *imgArray.length){
-            translate = 0;
-        }
-
-        document.querySelectorAll("#imgDiv img").forEach(img => {
-            img.style.transform = "translateX(" + -translate + "px)"
-        })
-    }
-
-    this.translateLeft = function () {
-        translate -= 1920
-        if (translate < 0){
-            translate = 1920 *(imgArray.length -1);
-        }
-
-        document.querySelectorAll("#imgDiv img").forEach(img => {
-            img.style.transform = "translateX(" + -translate + "px)"
-        })
-    }
+    this.translate = 0
 
     this.draw = function () {
-        document.querySelector("body").appendChild(imgDiv)
-
+        document.querySelector("body").appendChild(this.imgDiv)
     }
 
+    this.rightBtn.addEventListener("click", function () {
+        Carousel.prototype.translateRight()
+    })
+
+    this.leftBtn.addEventListener("click", function () {
+        Carousel.prototype.translateLeft()
+    })
 }
+
+Carousel.prototype.translate = 0
+
+Carousel.prototype.translateRight = function () {
+    Carousel.prototype.translate += 1920
+    if (Carousel.prototype.translate === 1920 *imgArray.length){
+        Carousel.prototype.translate = 0;
+    }
+
+    document.querySelectorAll("#imgDiv img").forEach(img => {
+        img.style.transform = "translateX(" + -Carousel.prototype.translate + "px)"
+    })
+}
+
+Carousel.prototype.translateLeft = function () {
+    Carousel.prototype.translate -= 1920
+    if (Carousel.prototype.translate < 0){
+        Carousel.prototype.translate = 1920 *(imgArray.length -1);
+    }
+
+    document.querySelectorAll("#imgDiv img").forEach(img => {
+        img.style.transform = "translateX(" + -Carousel.prototype.translate + "px)"
+    })
+}
+
+
+
 
 const test = new Carousel(imgArray);
 test.draw()
-
-document.querySelector("#rightBtn").addEventListener("click", function () {
-    test.translateRight()
-})
-
-document.querySelector("#leftBtn").addEventListener("click", function () {
-    test.translateLeft()
-})
 
