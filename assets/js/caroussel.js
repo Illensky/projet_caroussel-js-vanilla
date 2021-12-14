@@ -13,12 +13,14 @@ const imgArray = [
 
 const Carousel = function (imgArray, carouselWidth, carouselHeight) {
 
+    this.carouselWidth = carouselWidth
+    this.carouselHeight = carouselHeight
     this.imgArray = imgArray
 
     this.imgDiv = document.createElement("div")
     this.imgDiv.style.border = "2px solid black";
-    this.imgDiv.style.width = "1920px";
-    this.imgDiv.style.height = "1280px";
+    this.imgDiv.style.width = this.carouselWidth;
+    this.imgDiv.style.height = this.carouselHeight;
     this.imgDiv.style.margin = "auto";
     this.imgDiv.style.borderRadius = "5px";
     this.imgDiv.style.overflow = "hidden";
@@ -29,18 +31,18 @@ const Carousel = function (imgArray, carouselWidth, carouselHeight) {
     for (let img of this.imgArray) {
         this.newImg = document.createElement("img");
         this.newImg.src = img;
-        this.newImg.id = "img" + this.imgId.toString()
-        this.newImg.style.transform = "translateX(0)"
-        this.newImg.style.transition = "1000ms"
-        this.newImg.style.width = "1920px"
-        this.newImg.style.height = "1280px"
-        this.imgDiv.appendChild(this.newImg)
-        this.imgId++
+        this.newImg.id = "img" + this.imgId.toString();
+        this.newImg.style.transform = "translateX(0)";
+        this.newImg.style.transition = "1000ms";
+        this.newImg.style.width = this.carouselWidth;
+        this.newImg.style.height = this.carouselHeight;
+        this.imgDiv.appendChild(this.newImg);
+        this.imgId++;
     }
 
     this.btnContainer = document.createElement("div")
-    this.btnContainer.style.width = "1920px";
-    this.btnContainer.style.height = "1280px";
+    this.btnContainer.style.width = this.carouselWidth;
+    this.btnContainer.style.height = this.carouselHeight;
     this.btnContainer.style.display = "flex";
     this.btnContainer.style.position = "absolute"
     this.btnContainer.style.justifyContent = "space-between";
@@ -76,44 +78,36 @@ const Carousel = function (imgArray, carouselWidth, carouselHeight) {
 
     this.draw = function () {
         document.querySelector("body").appendChild(this.imgDiv)
+
     }
 
-    this.rightBtn.addEventListener("click", function () {
-        Carousel.prototype.translateRight()
-    })
+    this.translateLeft = function () {
+        this.translate -= parseInt(this.carouselWidth)
+        if (this.translate < 0){
+            this.translate = parseInt(this.carouselWidth) *(imgArray.length -1);
+        }
 
-    this.leftBtn.addEventListener("click", function () {
-        Carousel.prototype.translateLeft()
-    })
-}
-
-Carousel.prototype.translate = 0
-
-Carousel.prototype.translateRight = function () {
-    Carousel.prototype.translate += 1920
-    if (Carousel.prototype.translate === 1920 *imgArray.length){
-        Carousel.prototype.translate = 0;
+        document.querySelectorAll("#imgDiv img").forEach(img => {
+            img.style.transform = "translateX(" + -this.translate + "px)"
+        })
     }
 
-    document.querySelectorAll("#imgDiv img").forEach(img => {
-        img.style.transform = "translateX(" + -Carousel.prototype.translate + "px)"
-    })
-}
+    this.translateRight = function () {
+        this.translate += parseInt(this.carouselWidth)
+        if (this.translate === parseInt(this.carouselWidth) *imgArray.length){
+            this.translate = 0;
+        }
 
-Carousel.prototype.translateLeft = function () {
-    Carousel.prototype.translate -= 1920
-    if (Carousel.prototype.translate < 0){
-        Carousel.prototype.translate = 1920 *(imgArray.length -1);
+        document.querySelectorAll("#imgDiv img").forEach(img => {
+            img.style.transform = "translateX(" + -this.translate + "px)"
+        })
     }
 
-    document.querySelectorAll("#imgDiv img").forEach(img => {
-        img.style.transform = "translateX(" + -Carousel.prototype.translate + "px)"
-    })
+    this.rightBtn.addEventListener("click", () => this.translateRight())
+
+    this.leftBtn.addEventListener("click", () => this.translateLeft())
 }
 
-
-
-
-const test = new Carousel(imgArray);
+const test = new Carousel(imgArray, "1920px", "1280px");
 test.draw()
 
