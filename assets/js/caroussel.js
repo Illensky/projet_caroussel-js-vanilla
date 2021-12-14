@@ -13,7 +13,7 @@ const imgArray = [
 
 const Caroussel = function (imgArray) {
     const imgDiv = document.createElement("div")
-    imgDiv.style.backgroundSize = "cover";
+    imgDiv.style.backgroundSize = "83vw 54vh";
     imgDiv.style.border = "2px solid black";
     imgDiv.style.width = "80vw";
     imgDiv.style.height = "50vh";
