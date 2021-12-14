@@ -11,27 +11,42 @@ const imgArray = [
  * @constructor Carousel, used to build a caroussel from a image adress array
  */
 
-const Caroussel = function (imgArray) {
+const Carousel = function (imgArray, carouselWidth, carouselHeight) {
     const imgDiv = document.createElement("div")
-    imgDiv.style.backgroundSize = "83vw 54vh";
     imgDiv.style.border = "2px solid black";
-    imgDiv.style.width = "80vw";
-    imgDiv.style.height = "50vh";
+    imgDiv.style.width = "1920px";
+    imgDiv.style.height = "1280px";
     imgDiv.style.margin = "auto";
     imgDiv.style.borderRadius = "5px";
-    imgDiv.style.padding = "15px";
-    document.querySelector("body").appendChild(imgDiv)
+    imgDiv.style.overflow = "hidden";
+    imgDiv.style.display = "flex";
+    imgDiv.id = "imgDiv"
+
+    let imgId = 0
+    for (let img of imgArray) {
+        const newImg = document.createElement("img");
+        newImg.src = img;
+        newImg.id = "img" + imgId.toString()
+        newImg.style.transform = "translateX(0)"
+        newImg.style.transition = "1000ms"
+        newImg.style.width = "1920px"
+        newImg.style.height = "1280px"
+        imgDiv.appendChild(newImg)
+        imgId++
+    }
 
     const btnContainer = document.createElement("div")
-    btnContainer.style.width = "100%";
-    btnContainer.style.height = "100%";
+    btnContainer.style.width = "1920px";
+    btnContainer.style.height = "1280px";
     btnContainer.style.display = "flex";
+    btnContainer.style.position = "absolute"
     btnContainer.style.justifyContent = "space-between";
     btnContainer.style.alignItems = "center";
     imgDiv.appendChild(btnContainer);
 
     const leftBtn = document.createElement("button")
     leftBtn.innerHTML = "<"
+    leftBtn.id = "leftBtn"
     leftBtn.style.background = "darkgray";
     leftBtn.style.border = "none";
     leftBtn.style.borderRadius = "100%";
@@ -43,6 +58,7 @@ const Caroussel = function (imgArray) {
 
     const rightBtn = document.createElement("button")
     rightBtn.innerHTML = ">"
+    rightBtn.id = "rightBtn"
     rightBtn.style.background = "darkgray";
     rightBtn.style.border = "none";
     rightBtn.style.borderRadius = "100%";
@@ -52,37 +68,45 @@ const Caroussel = function (imgArray) {
     rightBtn.style.cursor = "pointer";
     btnContainer.appendChild(rightBtn)
 
-    let imgIndex = 0;
 
-    this.draw = function (){
-        imgDiv.style.backgroundImage = "url(" + imgArray[imgIndex] + ")"
-    }
+    let translate = 0
+    this.translateRight = function () {
+        translate += 1920
+        if (translate === 1920 *imgArray.length){
+            translate = 0;
+        }
 
-    this.set = function () {
-        this.draw()
-
-        rightBtn.addEventListener("click", () => {
-            imgIndex++;
-            this.draw();
-            if (imgIndex === imgArray.length) {
-                imgIndex = 0;
-                this.draw()
-            }
-        })
-
-        leftBtn.addEventListener("click", () => {
-            imgIndex--
-            this.draw()
-            if (imgIndex === -1) {
-                imgIndex = imgArray.length -1
-                this.draw()
-            }
+        document.querySelectorAll("#imgDiv img").forEach(img => {
+            img.style.transform = "translateX(" + -translate + "px)"
         })
     }
+
+    this.translateLeft = function () {
+        translate -= 1920
+        if (translate < 0){
+            translate = 1920 *(imgArray.length -1);
+        }
+
+        document.querySelectorAll("#imgDiv img").forEach(img => {
+            img.style.transform = "translateX(" + -translate + "px)"
+        })
+    }
+
+    this.draw = function () {
+        document.querySelector("body").appendChild(imgDiv)
+
+    }
+
 }
 
-const tryCaroussel = new Caroussel(imgArray);
-tryCaroussel.set();
+const test = new Carousel(imgArray);
+test.draw()
 
+document.querySelector("#rightBtn").addEventListener("click", function () {
+    test.translateRight()
+})
 
+document.querySelector("#leftBtn").addEventListener("click", function () {
+    test.translateLeft()
+})
 
